@@ -1,5 +1,4 @@
 library notes_rest_service;
 
-class NotesRestService {
-
-}
+export 'src/note_model.dart';
+export 'src/rest_service.dart';
