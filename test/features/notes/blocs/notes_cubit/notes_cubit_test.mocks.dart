@@ -39,10 +39,10 @@ class MockINotesRestService extends _i1.Mock implements _i3.INotesRestService {
   }
 
   @override
-  _i4.Future<List<_i2.NoteModel>> getNotes() => (super.noSuchMethod(
+  _i4.Future<List<_i2.NoteModel>> getNotes(int? userId) => (super.noSuchMethod(
         Invocation.method(
           #getNotes,
-          [],
+          [userId],
         ),
         returnValue: _i4.Future<List<_i2.NoteModel>>.value(<_i2.NoteModel>[]),
       ) as _i4.Future<List<_i2.NoteModel>>);

@@ -3,7 +3,7 @@ import 'dart:math';
 import 'note_model.dart';
 
 abstract class INotesRestService {
-  Future<List<NoteModel>> getNotes();
+  Future<List<NoteModel>> getNotes(int userId);
 
   Future<NoteModel> createNote(NoteModel note);
 
@@ -31,7 +31,7 @@ class FakeNotesRestService implements INotesRestService {
   }
 
   @override
-  Future<List<NoteModel>> getNotes() async {
+  Future<List<NoteModel>> getNotes(int userId) async {
     await Future.delayed(const Duration(milliseconds: 450));
     return <NoteModel>[];
   }

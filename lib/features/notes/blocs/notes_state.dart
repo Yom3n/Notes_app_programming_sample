@@ -2,7 +2,7 @@ part of 'notes_cubit.dart';
 
 enum NotesStatus {
   initial,
-  idle,
+  loaded,
   loading,
 }
 
