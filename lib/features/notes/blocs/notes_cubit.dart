@@ -16,11 +16,7 @@ class NotesCubit extends Cubit<NotesState> {
     emit(state.copyWith(status: NotesStatus.loading, notes: []));
     final notesModels = await notesRestService.getNotes(userId);
     final notes = notesModels
-        .map<Note>((noteModel) => Note(
-              id: noteModel.id,
-              text: noteModel.text,
-              title: noteModel.title,
-            ))
+        .map<Note>((noteModel) => Note.fromNoteModel(noteModel))
         .toList();
     emit(state.copyWith(status: NotesStatus.loaded, notes: notes));
   }
