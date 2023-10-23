@@ -14,10 +14,22 @@ class NotesCubit extends Cubit<NotesState> {
 
   Future<void> iInitialiseNotes(int userId) async {
     emit(state.copyWith(status: NotesStatus.loading, notes: []));
-    final notesModels = await notesRestService.getNotes(userId);
-    final notes = notesModels
-        .map<Note>((noteModel) => Note.fromNoteModel(noteModel))
-        .toList();
-    emit(state.copyWith(status: NotesStatus.loaded, notes: notes));
+    try {
+      final notesModels = await notesRestService.getNotes(userId);
+      final notes = notesModels
+          .map<Note>((noteModel) => Note.fromNoteModel(noteModel))
+          .toList();
+      emit(state.copyWith(status: NotesStatus.loaded, notes: notes));
+    } on NoteRestServiceException catch (restServiceException) {
+      emit(
+        state.copyWith(
+          status: NotesStatus.error,
+          noteErrorData: NoteErrorData(
+            NoteErrorStatus.userDoesNotExist,
+            exception: restServiceException,
+          ),
+        ),
+      );
+    }
   }
 }

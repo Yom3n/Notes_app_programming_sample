@@ -10,14 +10,16 @@ import 'notes_cubit_test.mocks.dart';
 
 @GenerateMocks([INotesRestService])
 void main() {
-  late final MockINotesRestService notesRestServiceMock;
+  late MockINotesRestService notesRestServiceMock;
 
   setUp(() {
     notesRestServiceMock = MockINotesRestService();
   });
 
   blocTest<NotesCubit, NotesState>(
-    'When initialiseNotes is called with correct userId, should call rest service with correct ID',
+    '''When initialiseNotes is called with correct userId, should call
+     rest service with correct Id and
+      emit states [Loading, Loaded] with correct data''',
     setUp: () {
       when(notesRestServiceMock.getNotes(any)).thenAnswer((_) async => [
             NoteModel(id: 1, title: 'First note', text: 'First note text'),
@@ -40,6 +42,28 @@ void main() {
         Note(id: 2, title: 'Second note', text: 'Second note text'),
         Note(id: 3, title: 'Third note', text: 'Third note text'),
       ]),
+    ],
+  );
+
+  blocTest<NotesCubit, NotesState>(
+    '''When initialiseNotes is called with correct userId, should call
+     rest service with correct Id and
+      emit states [Loading, Loaded] with correct data''',
+    setUp: () {
+      when(notesRestServiceMock.getNotes(any)).thenThrow(
+        NoteRestServiceException(statusCode: 404, errorMessage: 'Not found'),
+      );
+    },
+    build: () => NotesCubit(notesRestServiceMock),
+    act: (bloc) {
+      bloc.iInitialiseNotes(123);
+    },
+    expect: () => <NotesState>[
+      const NotesState(status: NotesStatus.loading),
+      const NotesState(
+        status: NotesStatus.error,
+        noteErrorData: NoteErrorData(NoteErrorStatus.userDoesNotExist),
+      ),
     ],
   );
 }
