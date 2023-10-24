@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../models/note.dart';
 import '../blocs/notes_cubit.dart';
 
 class NotesFeedPage extends StatelessWidget {
@@ -10,7 +11,7 @@ class NotesFeedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notes', style: Theme.of(context).textTheme.bodyMedium),
+        title: Text('Notes', style: Theme.of(context).textTheme.headlineMedium),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -20,12 +21,8 @@ class NotesFeedPage extends StatelessWidget {
               case NotesStatus.initial:
                 return const Center(child: Text('Note not initialized'));
               case NotesStatus.loaded:
-                return ListView.builder(
-                  itemBuilder: (context, index) {
-                    final note = notesState.notes[index];
-                    return Text(note.text);
-                  },
-                  itemCount: notesState.notes.length,
+                return NotesFeedBody(
+                  notes: notesState.notes,
                 );
               case NotesStatus.loading:
                 return Center(
@@ -34,14 +31,90 @@ class NotesFeedPage extends StatelessWidget {
                   ),
                 );
               case NotesStatus.error:
-                return Text(
-                  notesState.noteErrorData?.noteErrorStatus?.toString() ??
-                      'An error occurred while loading notes',
+                assert(
+                  notesState.noteErrorData != null,
+                  'Emitted error state without note error data!',
+                );
+                return NotesErrorBody(
+                  noteErrorData: notesState.noteErrorData!,
                 );
             }
           },
         ),
       ),
+    );
+  }
+}
+
+class NotesFeedBody extends StatelessWidget {
+  const NotesFeedBody({super.key, required this.notes});
+
+  final List<Note> notes;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        final note = notes[index];
+        return NoteItem(
+          key: Key('list_note${note.id}'),
+          note: note,
+        );
+      },
+      itemCount: notes.length,
+    );
+  }
+}
+
+class NoteItem extends StatelessWidget {
+  const NoteItem({super.key, required this.note});
+
+  final Note note;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Material(
+        elevation: 8,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                note.title,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text(
+                note.text,
+                style: Theme.of(context).textTheme.bodySmall,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class NotesErrorBody extends StatelessWidget {
+  const NotesErrorBody({super.key, required this.noteErrorData});
+
+  final NoteErrorData noteErrorData;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      noteErrorData.noteErrorStatus?.toString() ??
+          'An error occurred while loading notes',
     );
   }
 }
