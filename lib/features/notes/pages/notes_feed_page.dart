@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/ui/my_progress_indicator.dart';
 import '../../../models/note.dart';
 import '../blocs/notes_cubit.dart';
 
@@ -25,11 +26,7 @@ class NotesFeedPage extends StatelessWidget {
                   notes: notesState.notes,
                 );
               case NotesStatus.loading:
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                );
+                return const MyProgressIndicator();
               case NotesStatus.error:
                 assert(
                   notesState.noteErrorData != null,
