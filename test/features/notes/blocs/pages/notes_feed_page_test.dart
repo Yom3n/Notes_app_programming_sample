@@ -36,7 +36,7 @@ void main() {
   }
 
   testWidgets(
-    'Test page show loading indicator when status loading is emitted',
+    'NotesFeedPage show loading indicator when status loading is emitted',
     (tester) async {
       // Arrange
       await arrangeNotesFeedPage(
@@ -49,7 +49,7 @@ void main() {
   );
 
   testWidgets(
-    'Test page show notes feed when status Loaded is emitted',
+    'NotesFeedPage show notes feed, and AddNote button when status Loaded is emitted',
     (tester) async {
       // Arrange
       await arrangeNotesFeedPage(tester: tester, noteStatesToEmit: [
@@ -61,11 +61,13 @@ void main() {
       // Assert
       final notesFeed = find.byType(NotesFeedBody);
       expect(notesFeed, findsOneWidget);
+      final addNoteButton = find.byType(AddNoteFab);
+      expect(addNoteButton, findsOneWidget);
     },
   );
 
   testWidgets(
-    'Test page show error message when status Error is emitted',
+    'NotesFeedPage show error message when status Error is emitted',
     (tester) async {
       // Arrange
       await arrangeNotesFeedPage(tester: tester, noteStatesToEmit: [

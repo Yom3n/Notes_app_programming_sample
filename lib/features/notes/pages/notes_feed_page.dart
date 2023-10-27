@@ -11,6 +11,7 @@ class NotesFeedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: const AddNoteFab(),
       appBar: AppBar(
         title: Text('Notes', style: Theme.of(context).textTheme.headlineMedium),
       ),
@@ -113,5 +114,19 @@ class NotesErrorBody extends StatelessWidget {
       noteErrorData.noteErrorStatus?.toString() ??
           'An error occurred while loading notes',
     );
+  }
+}
+
+class AddNoteFab extends StatelessWidget {
+  const AddNoteFab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add),
+        onPressed: () {
+          throw UnimplementedError();
+        });
   }
 }
