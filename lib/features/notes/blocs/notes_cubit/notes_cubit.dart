@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:notes_rest_service/notes_rest_service.dart';
 
-import '../../../models/note.dart';
+import '../../../../models/note.dart';
 
 part 'notes_state.dart';
 

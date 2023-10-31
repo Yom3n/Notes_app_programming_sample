@@ -8,4 +8,10 @@ class NoteModel {
     required this.title,
     required this.text,
   });
+
+  NoteModel.empty({
+    this.id,
+    this.title = '',
+    this.text = '',
+  });
 }

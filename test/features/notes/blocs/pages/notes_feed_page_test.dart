@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:notes_app/core/ui/my_progress_indicator.dart';
-import 'package:notes_app/features/notes/blocs/notes_cubit.dart';
+import 'package:notes_app/features/notes/blocs/notes_cubit/notes_cubit.dart';
 import 'package:notes_app/features/notes/pages/notes_feed_page.dart';
 import 'package:notes_app/models/note.dart';
 

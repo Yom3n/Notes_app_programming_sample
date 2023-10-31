@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notes_app/features/notes/blocs/notes_cubit.dart';
+import 'package:notes_app/features/notes/blocs/notes_cubit/notes_cubit.dart';
 import 'package:notes_app/models/note.dart';
 import 'package:notes_rest_service/notes_rest_service.dart';
 

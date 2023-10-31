@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/routes.dart';
 import '../../../core/ui/my_progress_indicator.dart';
 import '../../../models/note.dart';
-import '../blocs/notes_cubit.dart';
+import '../blocs/notes_cubit/notes_cubit.dart';
 
 class NotesFeedPage extends StatelessWidget {
   const NotesFeedPage({super.key});
