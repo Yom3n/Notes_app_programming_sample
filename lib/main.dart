@@ -18,6 +18,9 @@ class MyApp extends StatelessWidget {
       title: 'Notes app',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        primaryColor: Colors.deepPurpleAccent,
+        primaryColorLight: Colors.purpleAccent.withAlpha(60),
+        primaryColorDark: Colors.deepPurple,
         appBarTheme:
             AppBarTheme.of(context).copyWith(backgroundColor: Colors.amber),
         useMaterial3: true,

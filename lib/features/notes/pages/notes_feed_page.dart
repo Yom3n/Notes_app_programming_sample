@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/routes.dart';
 import '../../../core/ui/my_progress_indicator.dart';
 import '../../../models/note.dart';
 import '../blocs/notes_cubit.dart';
@@ -126,7 +127,7 @@ class AddNoteFab extends StatelessWidget {
         shape: const CircleBorder(),
         child: const Icon(Icons.add),
         onPressed: () {
-          throw UnimplementedError();
+          Navigator.push(context, createNoteRoute());
         });
   }
 }
