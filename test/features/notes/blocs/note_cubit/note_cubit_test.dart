@@ -16,18 +16,33 @@ void main() {
     createNoteMock = MockCreateNote();
   });
 
+  const tNote = Note(title: 'Some title', text: 'Some text');
+
   blocTest<NoteCubit, NoteState>(
       'When ISaveNote is called with correct data test if createNote is called',
       setUp: () {
         when(createNoteMock(any)).thenAnswer((_) async => const Note());
       },
       build: () => NoteCubit(createNote: createNoteMock),
-      act: (bloc) => bloc.iSaveNote(
-            const Note(title: 'Some title', text: 'Some text'),
-          ),
+      act: (bloc) => bloc.iSaveNote(tNote),
       verify: (_) {
-        verify(
-            createNoteMock(const Note(title: 'Some title', text: 'Some text')));
+        verify(createNoteMock(tNote));
         verifyNoMoreInteractions(createNoteMock);
       });
+
+  blocTest<NoteCubit, NoteState>(
+      'When ISaveNote is called with correct data should emit Loading, and Saved states',
+      setUp: () {
+        when(createNoteMock(any))
+            .thenAnswer((_) async => tNote.copyWith(id: 1));
+      },
+      build: () => NoteCubit(createNote: createNoteMock),
+      act: (bloc) => bloc.iSaveNote(tNote),
+      expect: () => [
+            const NoteState(noteStateStatus: NoteStatus.loading),
+            const NoteState(
+              noteStateStatus: NoteStatus.saved,
+              note: Note(id: 1, title: 'Some title', text: 'Some text'),
+            ),
+          ]);
 }

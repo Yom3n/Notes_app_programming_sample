@@ -13,6 +13,18 @@ class Note extends Equatable {
         text = noteModel.text,
         title = noteModel.title;
 
+  Note copyWith({
+    int? id,
+    String? title,
+    String? text,
+  }) {
+    return Note(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      text: text ?? this.text,
+    );
+  }
+
   NoteModel toNoteModel() => NoteModel(id: id, title: title, text: text);
 
   @override
