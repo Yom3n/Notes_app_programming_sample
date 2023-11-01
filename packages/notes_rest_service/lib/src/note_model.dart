@@ -1,17 +1,22 @@
-class NoteModel {
+import 'package:equatable/equatable.dart';
+
+class NoteModel extends Equatable {
   final int? id;
   final String title;
   final String text;
 
-  NoteModel({
+  const NoteModel({
     this.id,
     required this.title,
     required this.text,
   });
 
-  NoteModel.empty({
+  const NoteModel.empty({
     this.id,
     this.title = '',
     this.text = '',
   });
+
+  @override
+  List<Object?> get props => [id, title, text];
 }

@@ -9,7 +9,8 @@ class CreateNote extends UseCase<Note, Note> {
 
   @override
   Future<Note> call(Note params) async {
-    final createdNote = await notesRestService.createNote(params.toNoteModel());
+    final noteModel = params.toNoteModel();
+    final createdNote = await notesRestService.createNote(noteModel);
     return Note.fromNoteModel(createdNote);
   }
 }
