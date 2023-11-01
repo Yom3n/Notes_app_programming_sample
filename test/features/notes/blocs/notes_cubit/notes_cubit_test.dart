@@ -22,9 +22,12 @@ void main() {
       emit states [Loading, Loaded] with correct data''',
     setUp: () {
       when(notesRestServiceMock.getNotes(any)).thenAnswer((_) async => [
-            const NoteModel(id: 1, title: 'First note', text: 'First note text'),
-            const NoteModel(id: 2, title: 'Second note', text: 'Second note text'),
-            const NoteModel(id: 3, title: 'Third note', text: 'Third note text'),
+            const NoteModel(
+                id: 1, title: 'First note', text: 'First note text'),
+            const NoteModel(
+                id: 2, title: 'Second note', text: 'Second note text'),
+            const NoteModel(
+                id: 3, title: 'Third note', text: 'Third note text'),
           ]);
     },
     build: () => NotesCubit(notesRestServiceMock),
@@ -66,4 +69,5 @@ void main() {
       ),
     ],
   );
+
 }

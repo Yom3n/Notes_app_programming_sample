@@ -6,6 +6,7 @@ enum NoteStatus {
   loading,
   saved,
   validationError,
+  noteCreationFailure,
 }
 
 class NoteState extends Equatable {

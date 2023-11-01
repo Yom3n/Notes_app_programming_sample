@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notes_app/features/notes/blocs/note_cubit/note_cubit.dart';
+import 'package:notes_app/features/notes/note_failures.dart';
 import 'package:notes_app/features/notes/use_cases/create_note.dart';
 import 'package:notes_app/models/note.dart';
 
@@ -44,5 +45,17 @@ void main() {
               noteStateStatus: NoteStatus.saved,
               note: Note(id: 1, title: 'Some title', text: 'Some text'),
             ),
+          ]);
+
+  blocTest<NoteCubit, NoteState>(
+      '''When createNote use case throws NoteCreationFailure should emit Error state''',
+      setUp: () {
+        when(createNoteMock(any)).thenThrow(NoteCreationFailure());
+      },
+      build: () => NoteCubit(createNote: createNoteMock),
+      act: (bloc) => bloc.iSaveNote(tNote),
+      expect: () => [
+            const NoteState(noteStateStatus: NoteStatus.loading),
+            const NoteState(noteStateStatus: NoteStatus.noteCreationFailure),
           ]);
 }

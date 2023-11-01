@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:notes_app/features/notes/note_failures.dart';
 import 'package:notes_app/models/note.dart';
 
 import '../../use_cases/create_note.dart';
@@ -14,7 +15,11 @@ class NoteCubit extends Cubit<NoteState> {
 
   void iSaveNote(Note note) async {
     emit(const NoteState(noteStateStatus: NoteStatus.loading));
-    final createdNote = await createNote(note);
-    emit(NoteState(noteStateStatus: NoteStatus.saved, note: createdNote));
+    try {
+      final createdNote = await createNote(note);
+      emit(NoteState(noteStateStatus: NoteStatus.saved, note: createdNote));
+    } on NoteCreationFailure {
+      emit(const NoteState(noteStateStatus: NoteStatus.noteCreationFailure));
+    }
   }
 }
