@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notes_app/features/notes/note_failures.dart';
 import 'package:notes_app/features/notes/use_cases/create_note.dart';
 import 'package:notes_app/models/note.dart';
 import 'package:notes_rest_service/notes_rest_service.dart';
@@ -54,5 +55,14 @@ void main() {
           title: 'Some title',
           text: 'Some text',
         ));
+  });
+
+  test('Should throw NoteCreationFailure when rest call throw exception ',
+      () async {
+    // Arrange
+    when(notesRestServiceMock.createNote(any))
+        .thenThrow(NoteRestServiceException(statusCode: 500));
+    //Assert
+    expect(sut(const Note()), throwsA(isA<NoteCreationFailure>()));
   });
 }

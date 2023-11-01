@@ -1,0 +1,1 @@
+class NoteCreationFailure extends Error {}
