@@ -3,15 +3,17 @@ import 'package:equatable/equatable.dart';
 import 'package:notes_app/models/note.dart';
 import 'package:notes_rest_service/notes_rest_service.dart';
 
+import '../../use_cases/create_note.dart';
+
 part 'note_state.dart';
 
 class NoteCubit extends Cubit<NoteState> {
-  final INotesRestService notesRestService;
+  final CreateNote createNote;
 
-  NoteCubit({required this.notesRestService})
+  NoteCubit({required this.createNote})
       : super(const NoteState(noteStateStatus: NoteStatus.initial));
 
   void iSaveNote(Note note) async {
-    await notesRestService.createNote(note.toNoteModel());
+    await createNote(note);
   }
 }

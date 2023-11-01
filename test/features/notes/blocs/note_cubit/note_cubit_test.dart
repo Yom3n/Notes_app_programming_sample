@@ -3,33 +3,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notes_app/features/notes/blocs/note_cubit/note_cubit.dart';
+import 'package:notes_app/features/notes/use_cases/create_note.dart';
 import 'package:notes_app/models/note.dart';
-import 'package:notes_rest_service/notes_rest_service.dart';
 
-import '../notes_cubit/notes_cubit_test.mocks.dart';
+import 'note_cubit_test.mocks.dart';
 
-@GenerateMocks([INotesRestService])
+@GenerateMocks([CreateNote])
 void main() {
-  late MockINotesRestService notesRestServiceMock;
+  late MockCreateNote createNoteMock;
 
   setUp(() {
-    notesRestServiceMock = MockINotesRestService();
+    createNoteMock = MockCreateNote();
   });
 
   blocTest<NoteCubit, NoteState>(
-      'Test if SaveNote is called on NotesRestService with correct data,'
-      ' when ISaveNote is called with correct data',
+      'When ISaveNote is called with correct data test if createNote is called',
       setUp: () {
-        when(notesRestServiceMock.createNote(any))
-            .thenAnswer((realInvocation) async => NoteModel.empty());
+        when(createNoteMock(any)).thenAnswer((_) async => const Note());
       },
-      build: () => NoteCubit(notesRestService: notesRestServiceMock),
+      build: () => NoteCubit(createNote: createNoteMock),
       act: (bloc) => bloc.iSaveNote(
             const Note(title: 'Some title', text: 'Some text'),
           ),
       verify: (_) {
-        verify(notesRestServiceMock
-            .createNote(NoteModel(title: 'Some title', text: 'Some text')));
-        verifyNoMoreInteractions(notesRestServiceMock);
+        verify(
+            createNoteMock(const Note(title: 'Some title', text: 'Some text')));
+        verifyNoMoreInteractions(createNoteMock);
       });
 }
