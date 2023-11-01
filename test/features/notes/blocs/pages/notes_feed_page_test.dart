@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:notes_app/core/ui/my_progress_indicator.dart';
 import 'package:notes_app/features/notes/blocs/notes_cubit/notes_cubit.dart';
+import 'package:notes_app/features/notes/pages/create_note_page.dart';
 import 'package:notes_app/features/notes/pages/notes_feed_page.dart';
 import 'package:notes_app/models/note.dart';
 
@@ -81,6 +82,23 @@ void main() {
       // Assert
       final notesFeed = find.byType(NotesErrorBody);
       expect(notesFeed, findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'Should move to CreteNotePage when AddNote button is tapped',
+    (tester) async {
+      // Arrange
+      await arrangeNotesFeedPage(
+          tester: tester,
+          noteStatesToEmit: [const NotesState(status: NotesStatus.loaded)]);
+      // Assert
+      final addNoteButton = find.byType(AddNoteFab);
+      expect(addNoteButton, findsOneWidget);
+
+      await tester.tap(addNoteButton);
+      await tester.pumpAndSettle();
+      expect(find.byType(CreateNotePage), findsOneWidget);
     },
   );
 }
