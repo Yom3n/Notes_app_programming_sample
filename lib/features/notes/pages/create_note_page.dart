@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/core/ui/my_progress_indicator.dart';
+import 'package:notes_app/features/notes/blocs/note_cubit/note_cubit.dart';
 
 class CreateNotePage extends StatelessWidget {
   const CreateNotePage({super.key});
@@ -9,22 +12,33 @@ class CreateNotePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Add note'),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(10),
-        child: CreateNotePageBody(),
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: BlocBuilder<NoteCubit, NoteState>(
+          builder: (context, state) {
+            switch (state.noteStateStatus) {
+              case NoteStatus.initial:
+                return const Text('Page in initial state');
+              case NoteStatus.loading:
+                return const MyProgressIndicator();
+              default:
+                return const CreateNotePageForm();
+            }
+          },
+        ),
       ),
     );
   }
 }
 
-class CreateNotePageBody extends StatefulWidget {
-  const CreateNotePageBody({super.key});
+class CreateNotePageForm extends StatefulWidget {
+  const CreateNotePageForm({super.key});
 
   @override
-  State<CreateNotePageBody> createState() => _CreateNotePageBodyState();
+  State<CreateNotePageForm> createState() => _CreateNotePageFormState();
 }
 
-class _CreateNotePageBodyState extends State<CreateNotePageBody> {
+class _CreateNotePageFormState extends State<CreateNotePageForm> {
   late final TextEditingController titleController, noteController;
 
   @override
@@ -61,11 +75,16 @@ class _CreateNotePageBodyState extends State<CreateNotePageBody> {
           ),
         ),
         const SizedBox(height: 30),
-        ElevatedButton(
-          child: const Text('Save'),
-          onPressed: () {
-            throw UnimplementedError();
-          },
+        Center(
+          child: SizedBox(
+            width: 240,
+            child: ElevatedButton(
+              child: const Text('Save'),
+              onPressed: () {
+                throw UnimplementedError();
+              },
+            ),
+          ),
         )
       ],
     );
