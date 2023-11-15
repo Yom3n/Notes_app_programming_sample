@@ -40,9 +40,9 @@ void main() {
       build: () => NoteCubit(createNote: createNoteMock),
       act: (bloc) => bloc.iSaveNote(tNote),
       expect: () => [
-            const NoteState(noteStateStatus: NoteStatus.loading),
+            const NoteState(status: NoteStatus.loading),
             const NoteState(
-              noteStateStatus: NoteStatus.saved,
+              status: NoteStatus.saved,
               note: Note(id: 1, title: 'Some title', text: 'Some text'),
             ),
           ]);
@@ -55,7 +55,7 @@ void main() {
       build: () => NoteCubit(createNote: createNoteMock),
       act: (bloc) => bloc.iSaveNote(tNote),
       expect: () => [
-            const NoteState(noteStateStatus: NoteStatus.loading),
-            const NoteState(noteStateStatus: NoteStatus.noteCreationFailure),
+            const NoteState(status: NoteStatus.loading),
+            const NoteState(status: NoteStatus.noteCreationFailure),
           ]);
 }

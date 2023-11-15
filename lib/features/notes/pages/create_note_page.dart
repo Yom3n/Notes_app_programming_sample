@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/core/ui/my_progress_indicator.dart';
 import 'package:notes_app/features/notes/blocs/note_cubit/note_cubit.dart';
 
+import '../../../models/note.dart';
+
 class CreateNotePage extends StatelessWidget {
   const CreateNotePage({super.key});
 
@@ -14,14 +16,22 @@ class CreateNotePage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: BlocBuilder<NoteCubit, NoteState>(
+        child: BlocConsumer<NoteCubit, NoteState>(
+          listener: (context, state) {
+            if (state.status == NoteStatus.saved) {
+              Navigator.pop(context, state.note);
+            }
+          },
           builder: (context, state) {
-            switch (state.noteStateStatus) {
+            switch (state.status) {
               case NoteStatus.initial:
                 return const Text('Page in initial state');
               case NoteStatus.loading:
                 return const MyProgressIndicator();
-              default:
+              case NoteStatus.idle:
+              case NoteStatus.saved:
+              case NoteStatus.validationError:
+              case NoteStatus.noteCreationFailure:
                 return const CreateNotePageForm();
             }
           },
@@ -53,6 +63,7 @@ class _CreateNotePageFormState extends State<CreateNotePageForm> {
     return ListView(
       children: [
         TextField(
+          key: const Key('TitleFieldKey'),
           controller: titleController,
           decoration: InputDecoration(
             label: const Text('Title'),
@@ -63,6 +74,7 @@ class _CreateNotePageFormState extends State<CreateNotePageForm> {
         ),
         const SizedBox(height: 25),
         TextField(
+          key: const Key('TextFieldKey'),
           controller: noteController,
           keyboardType: TextInputType.multiline,
           minLines: 5,
@@ -79,9 +91,14 @@ class _CreateNotePageFormState extends State<CreateNotePageForm> {
           child: SizedBox(
             width: 240,
             child: ElevatedButton(
+              key: const Key('SaveButton'),
               child: const Text('Save'),
               onPressed: () {
-                throw UnimplementedError();
+                context.read<NoteCubit>().iSaveNote(
+                      Note(
+                          title: titleController.text,
+                          text: noteController.text),
+                    );
               },
             ),
           ),

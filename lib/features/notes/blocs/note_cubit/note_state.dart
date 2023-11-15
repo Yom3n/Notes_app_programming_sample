@@ -10,14 +10,14 @@ enum NoteStatus {
 }
 
 class NoteState extends Equatable {
-  final NoteStatus noteStateStatus;
+  final NoteStatus status;
   final Note note;
 
   const NoteState({
-    required this.noteStateStatus,
+    required this.status,
     this.note = const Note(),
   });
 
   @override
-  List<Object> get props => [noteStateStatus, note];
+  List<Object> get props => [status, note];
 }

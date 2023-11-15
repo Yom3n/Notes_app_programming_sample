@@ -11,15 +11,15 @@ class NoteCubit extends Cubit<NoteState> {
   final CreateNote createNote;
 
   NoteCubit({required this.createNote})
-      : super(const NoteState(noteStateStatus: NoteStatus.initial));
+      : super(const NoteState(status: NoteStatus.idle));
 
   void iSaveNote(Note note) async {
-    emit(const NoteState(noteStateStatus: NoteStatus.loading));
+    emit(const NoteState(status: NoteStatus.loading));
     try {
       final createdNote = await createNote(note);
-      emit(NoteState(noteStateStatus: NoteStatus.saved, note: createdNote));
+      emit(NoteState(status: NoteStatus.saved, note: createdNote));
     } on NoteCreationFailure {
-      emit(const NoteState(noteStateStatus: NoteStatus.noteCreationFailure));
+      emit(const NoteState(status: NoteStatus.noteCreationFailure));
     }
   }
 }

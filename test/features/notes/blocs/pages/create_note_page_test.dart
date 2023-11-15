@@ -20,7 +20,7 @@ void main() {
     whenListen(
       noteCubitMock,
       Stream.fromIterable(statesToEmit),
-      initialState: const NoteState(noteStateStatus: NoteStatus.idle),
+      initialState: const NoteState(status: NoteStatus.idle),
     );
     await tester.pumpWidget(
       MaterialApp(
@@ -37,7 +37,7 @@ void main() {
       (tester) async {
     await arrangeCreateNotePage(
       tester: tester,
-      statesToEmit: [const NoteState(noteStateStatus: NoteStatus.idle)],
+      statesToEmit: [const NoteState(status: NoteStatus.idle)],
     );
 
     final noteFormField = find.byType(CreateNotePageForm);
@@ -48,10 +48,28 @@ void main() {
       (tester) async {
     await arrangeCreateNotePage(
       tester: tester,
-      statesToEmit: [const NoteState(noteStateStatus: NoteStatus.loading)],
+      statesToEmit: [const NoteState(status: NoteStatus.loading)],
     );
 
     final noteFormField = find.byType(MyProgressIndicator);
     expect(noteFormField, findsOneWidget);
   });
+
+  // testWidgets(
+  //     'Test typing title, and text, then taping save, to call iSave on Cubit with correct data',
+  //     (tester) async {
+  //   await arrangeCreateNotePage(
+  //     tester: tester,
+  //     statesToEmit: [const NoteState(noteStateStatus: NoteStatus.idle)],
+  //   );
+  //
+  //   final titleInput = find.byKey(const Key('TitleFieldKey'));
+  //   await tester.enterText(titleInput, 'Title');
+  //   final textInput = find.byKey(const Key('TextFieldKey'));
+  //   await tester.enterText(textInput, 'Text');
+  //
+  //   final saveButton = find.byKey(const Key('SaveButton'));
+  //   await tester.tap(saveButton);
+  //   verify(noteCubitMock.iSaveNote(const Note(title: 'Title', text: 'Text'))); // Is it possible to verify MockCubit?
+  // });
 }
